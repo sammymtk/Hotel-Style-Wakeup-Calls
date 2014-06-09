@@ -65,7 +65,7 @@ if(isset($_POST['SCHEDULE'])) {
 	if ($HH == "" || $Ext == "" || $DD == "" || $MON == "" || $YYYY == "" || $badtime )  {
 		// abandon .call file creation and pop up a js alert to the user
 		echo "<script type='text/javascript'>\n";
-		echo "alert('Cannot schedule the call, either due to insufficient data or the scheduled time was in the past');\n";
+		echo "alert('Non e\' possibile pianificare la chiamata, o a causa di dati insufficienti o perche\' il tempo inserito e\' gia\' passato.');\n";
 		echo "</script>";
     }
 	else
@@ -106,26 +106,26 @@ if (!$DD)  { $DD   = $w['mday'];}
 if (!$YYYY){ $YYYY = $w['year'];}
 
 ?>
-<h1><b>Wake Up Calls</b></h1>
+<h1><b>Funzione sveglia</b></h1>
 <hr><br>
-Wake Up calls can be used to schedule a reminder or wakeup call to any valid destination.<br>
-To schedule a call, dial the feature code assigned in FreePBX Feature Codes or use the<br>
-form below.<br><br>
+La funzione sveglia, puo' essere utilizzata per programmare un promemoria o campanello d'allarme per qualsiasi destinazione valida.<br>
+Per pianificare una chiamata, chiamare il codice funzione specificato nei codici funzione FreePBX oppure utilizzare il
+modulo qui sotto.<br><br>
 
-<h2><b>Schedule a new call:</b></h2>
+<h2><b>Pianificare una nuova chiamata:</b></h2>
 
 <?php
-echo "<FORM NAME=\"InsertFORM\"  ACTION=\"\" METHOD=POST>Destination: <INPUT TYPE=\"TEXTBOX\" NAME=\"ExtBox\" VALUE=\"$Ext\" SIZE=\"12\" MAXLENGTH=\"20\">HH:MM <INPUT TYPE=\"TEXTBOX\" NAME=\"HH\" VALUE=\"$HH\" SIZE=\"2\" MAXLENGTH=\"2\">:\n";
+echo "<FORM NAME=\"InsertFORM\"  ACTION=\"\" METHOD=POST>Destinazione: <INPUT TYPE=\"TEXTBOX\" NAME=\"ExtBox\" VALUE=\"$Ext\" SIZE=\"12\" MAXLENGTH=\"20\">HH:MM <INPUT TYPE=\"TEXTBOX\" NAME=\"HH\" VALUE=\"$HH\" SIZE=\"2\" MAXLENGTH=\"2\">:\n";
 echo "<INPUT TYPE=\"TEXTBOX\" NAME=\"MM\" VALUE=\"$MM\" SIZE=\"2\" MAXLENGTH=\"2\">DD / MM / YYYY <INPUT TYPE=\"TEXTBOX\" NAME=\"DD\" SIZE=\"2\" MAXLENGTH=\"2\" VALUE=\"$DD\">/\n";
 echo "<INPUT TYPE=\"TEXTBOX\" NAME=\"MON\" SIZE=\"2\" MAXLENGTH=\"2\" VALUE=\"$MON\">/<INPUT TYPE=\"TEXTBOX\" NAME=\"YYYY\" SIZE=\"4\" MAXLENGTH=\"4\" VALUE=\"$YYYY\">\n";
-echo "<INPUT TYPE=\"SUBMIT\" NAME=\"SCHEDULE\" VALUE=\"SCHEDULE\">\n";
+echo "<INPUT TYPE=\"SUBMIT\" NAME=\"SCHEDULE\" VALUE=\"PIANIFICA\">\n";
 echo "</FORM>\n";
 
-echo "<br><h2><b>Scheduled Calls:</b></h2>\n";
+echo "<br><h2><b>Chiamate programmate:</b></h2>\n";
 // Page is static, so add button to refresh table
-echo "<FORM NAME=\"refresh\" ACTION=\"\" METHOD=POST><INPUT NAME=\"RefreshTable\" TYPE=\"SUBMIT\" VALUE=\"Refresh Table\"></form>\n";
+echo "<FORM NAME=\"refresh\" ACTION=\"\" METHOD=POST><INPUT NAME=\"RefreshTable\" TYPE=\"SUBMIT\" VALUE=\"Aggiorna Tabella\"></form>\n";
 echo "<TABLE cellSpacing=1 cellPadding=1 width=900 border=1 >\n" ;
-echo "<TD>Time</TD><TD>Date</TD><TD>Destination</TD><TD>Delete</TD></TR>\n" ;
+echo "<TD>Ora</TD><TD>Data</TD><TD>Destinazione</TD><TD>Cancella</TD></TR>\n" ;
 
 // check spool directory and create a table listing all .call files created by this module
 $count = 0;
@@ -138,47 +138,47 @@ foreach($files as $file) {
 		$h = substr($myresult[0],0,2);
 		$m = substr($myresult[0],2,3);
 		$wucext = $myresult[1];
- 		echo "<TR><TD><FORM NAME=\"UpdateFORM\" ACTION=\"\" METHOD=POST><FONT face=verdana,sans-serif>" . $filetime . "</TD><TD>".$filedate."</TD><TD>" .$wucext ."</TD><TD><input type=\"hidden\" id=\"filename\" name=\"filename\" value=\"$file\"><INPUT NAME=\"DELETE\" TYPE=\"SUBMIT\" VALUE=\"Delete\"></TD></FORM>\n";
+ 		echo "<TR><TD><FORM NAME=\"UpdateFORM\" ACTION=\"\" METHOD=POST><FONT face=verdana,sans-serif>" . $filetime . "</TD><TD>".$filedate."</TD><TD>" .$wucext ."</TD><TD><input type=\"hidden\" id=\"filename\" name=\"filename\" value=\"$file\"><INPUT NAME=\"DELETE\" TYPE=\"SUBMIT\" VALUE=\"Cancella\"></TD></FORM>\n";
 	}
 	$count++;
 }
 echo "</TABLE>\n";
 if (!$count){
-	print "No scheduled calls";
+	print "Nessuna sveglia pianificata";
         }
 ?>
 <br><br>
 
 <form NAME="SAVECONFIG" id="SAVECONFIG" method="POST" action="">
-<h2><b>Module Configuration:</b></h2>
-By default, Wake Up calls are only made back to the Caller ID of the user which requests them.<br>
-When the Operator Mode is enabled, certain extensions are identified to be able to request a <br>
-Wake Up call for any valid internal or external destination.<br><br>
+<h2><b>Configurazione Modulo:</b></h2>
+Per impostazione predefinita, il servizio sveglia e' attivabile solo per il proprio Caller ID, chiamando il codice di servizio.<br>
+Quando la modalita' operatore e' abilitata, gli interni specificati sono abilitati ad attivare <br>
+la sveglia per qualsiasi destinazione interna o esterna valida.<br><br>
 <table border="0" width="430" id="table1">
   <tr>
-    <td width="153"><a href="javascript: return false;" class="info">Operator Mode: <span><u>ENABLE</u> Operator Mode to allow designated extentions to create wake up calls for any valid destination.<br><u>DISABLE</u> Calls can only be placed back to the caller ID of the user scheduling the wakeup call.</span></a></td>
+    <td width="153"><a href="javascript: return false;" class="info">Modalita' Operatore: <span><u>ENABLE</u> Modalita' Operatore gli interni specificati sono abilitati ad attivare la sveglia per qualsiasi destinazione interna o esterna valida<br><u>DISABLE</u> il servizio sveglia e' attivabile solo per il proprio Caller ID, chiamando il codice di servizio.</span></a></td>
     <td width="129">
 <?php 
 echo "<input type=\"radio\" value=\"0\" name=\"operator_mode\"".(($date[operator_mode]==0)?' checked':'').">\n";
 ?> 
-Disabled&nbsp;</td>
+Disabilitata&nbsp;</td>
     <td>
 <?php
 echo "<input type=\"radio\" value=\"1\" name=\"operator_mode\"".(($date[operator_mode]==1)?' checked':'').">\n";
 ?>
-&nbsp; Enabled</td>
+&nbsp; Abilitata</td>
   </tr>
   <tr>
-    <td width="180"><a href="javascript: return false;" class="info">Max Dest. Length: <span>This controls the maximum number of digits an operator can send a wakeup call to. Set to 10 or 11 to allow wake up calls to outside numbers.</span></a></td>
+    <td width="180"><a href="javascript: return false;" class="info">Lunghezza massima destinazione: <span>Questo controlla il numero massimo di cifre a cui un operatore puo' inviare una sveglia. Imposta a 10 o 11 per consentire la sveglia a numeri esterni.</span></a></td>
     <td width="129">&nbsp;
 <?php
-echo "<input type=\"text\" name=\"extensionlength\" size=\"8\" value=\"{$date[extensionlength]}\" style=\"text-align: right\">Digits\n ";
+echo "<input type=\"text\" name=\"extensionlength\" size=\"8\" value=\"{$date[extensionlength]}\" style=\"text-align: right\">Numeri\n ";
 ?>
 </td>
     <td> &nbsp;</td>
   </tr>
   <tr>
-    <td width="180"><a href="javascript: return false;" class="info">Operator Extensions: <span>Enter the Caller ID's of each telephone you wish to be recognized as an `Operator`.  Operator extensions are allowed to create wakeup calls for any valid destination. Numbers can be extension numbers, full caller ID numbers or Asterisk dialing patterns.</span></a></td>
+    <td width="180"><a href="javascript: return false;" class="info">Interni Operatore: <span>Inserisci il Caller ID di ogni telefono che si desidera essere riconosciuto come un `operatore`. Gli interni operatore sono autorizzati a creare sveglie telefoniche per qualsiasi destinazione valida. I numeri possono essere numeri interni, numeri ID chiamante completi o modelli di composizione Asterisk.</span></a></td>
     <td colspan="2">
 <?php
 echo "<input type=\"text\" name=\"operator_extensions\" size=\"37\" value=\"{$date[operator_extensions]}\">\n";
@@ -187,38 +187,38 @@ echo "<input type=\"text\" name=\"operator_extensions\" size=\"37\" value=\"{$da
   </tr>
   <tr>
     <td width="153">&nbsp;</td>
-    <td colspan="2">(Use a comma separated list)</td>
+    <td colspan="2">(Utilizzare un elenco separato da virgola)</td>
   </tr>
 </table>
 
 <table border="0" width="428" id="table2">
   <tr>
-    <td width="155"><a href="javascript: return false;" class="info">Ring Time:<span>The number of seconds for the phone to ring. Consider setting lower than the voicemail threshold or the wakeup call can end up going to voicemail.</span></a></td>
+    <td width="155"><a href="javascript: return false;" class="info">Durata Squillo:<span>Il numero di secondi che il telefono deve squillare. Impostare inferiore alla soglia segreteria telefonica o la sveglia telefonica puo' finire per andare alla segreteria.</span></a></td>
     <td>
 <?php
 echo "<input type=\"text\" name=\"waittime\" size=\"13\" value=\"{$date[waittime]}\" style=\"text-align: right\">\n";
-?> Seconds
+?> Secondi
     </td>
   </tr>
   <tr>
-    <td width="155"><a href="javascript: return false;" class="info">Retry Time:<span>The number of seconds to wait between retrys.  A 'retry' happens if the wakeup call is not answered.</span></a></td>
+    <td width="155"><a href="javascript: return false;" class="info">Tempo tra tentativi:<span>Il numero di secondi di attesa tra tentativi. Il tentativo avviene se non si risponde alla sveglia telefonica.</span></a></td>
     <td>
 <?php
 echo "<input type=\"text\" name=\"retrytime\" size=\"13\" value=\"{$date[retrytime]}\" style=\"text-align: right\">\n";
-?> Seconds
+?> Secondi
     </td>
   </tr>
   <tr>
-    <td width="155"><a href="javascript: return false;" class="info">Max Retries:<span>The maximum number of times the system should attempt to deliver the wakeup call when there is no answer.  Zero retries means only one call will be placed.</span></a></td>
+    <td width="155"><a href="javascript: return false;" class="info">Numero massimo tentativi:<span>Il numero massimo di volte che il sistema deve tentare di inviare la sveglia telefonica quando non c'e' risposta. Zero tentativi significa solo una chiamata verra' effettuata.</span></a></td>
     <td>
 <?php
 echo "<input type=\"text\" name=\"maxretries\" size=\"13\" value=\"{$date[maxretries]}\" style=\"text-align: right\">\n";
-?> Tries
+?> Tentativi
     </td>
   </tr>
 
   <tr>
-    <td width="155"><a href="javascript: return false;" class="info">Wake Up Caller ID:<span><u>First Box: </u>Enter the CNAM (Caller ID Name) to be sent by the system when placing the wakeup calls.  Enclose this string with " if required by your system.<br><u>Second Box: </u>Enter the CID (Caller ID number) of the Caller ID to be sent when the system places wake up calls.</span></a></td>
+    <td width="155"><a href="javascript: return false;" class="info">ID chiamante della sveglia telefonica:<span><u>Primo Campo: </u>Inserisci il CNAM (Nome ID chiamante) che deve essere inviato dal sistema durante la sveglia telefonica. Racchiudere questa stringa con " se richiesto dal sistema.<br><u>Secondo Campo: </u>Inserisci il CID (numero ID chiamante), da inviare quando viene effettuata la sveglia telefonica.</span></a></td>
     <td>
 <?php
 //echo "&quot;<input type=\"text\" name=\"calleridtext\" size=\"10\" value=\"{$date[cnam]}\" style=\"text-align: center\">&quot;\n";
@@ -228,15 +228,15 @@ echo "&lt;<input type=\"text\" name=\"calleridnumber\" size=\"5\" value=\"{$date
     </td>
   </tr>
 </table>
-<small>*Some systems require quote marks around the textual caller ID. You may include the " " if needed by your system.</small>
+<small>* Alcuni sistemi richiedono le virgolette intorno al testo ID chiamante. E' possibile includere le " " se necessario per il vostro sistema.</small>
 
-<br><input type="submit" value="Submit" name="B1"><br><br>
+<br><input type="submit" value="Invia" name="B1"><br><br>
 </FORM>
 
-<h2><b>System Settings:</b></h2>
-For scheduled calls to be delivered at the correct time, the system time zone and current time must be set properly.<br>
-The system is reporting the following time zone and time:<br>
-<b>Time zone:</b>  <?php echo date_default_timezone_get() ?><br>
+<h2><b>Impostazioni di sistema:</b></h2>
+Per pianificare le chiamate da effettuare all'ora corretta, il fuso orario del sistema e l'ora corrente devono essere impostati correttamente.<br>
+Il sistema riporta la seguente fuso orario e l'ora:<br>
+<b>Fuso orario:</b>  <?php echo date_default_timezone_get() ?><br>
 <?php echo _("<b>System time:</b> ")?> <span id="idTime">00:00:00</span>
 
 <script>
